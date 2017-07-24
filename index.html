@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+        <meta charset=utf-8>
+        <!-- add libs -->
+        <script language="JavaScript" type="text/javascript" src="//comet-server.com/js/lib/jquery.min.js" ></script>
+        <script src="//comet-server.com/CometServerApi.js" type="text/javascript"></script>
+</head>
+<body>
+
+<style>
+
+hr{
+    clear:both;
+}
+
+.hide{
+    display:none;
+}
+
+#log{
+    color:#000
+}
+.status{
+    color:#272;
+    font-weight:bold;
+}
+
+.note{
+    background:#eee;
+    padding:1px 10px;
+    margin:5px;
+    border-radius:5px;
+    text-align:justify;
+}
+</style>
+
+<h3>Auth chat</h3>
+<div class="note">
+    <p><a href="https://github.com/CppComet/auth-example">Git repository with all code of this example.</a></p> 
+</div>
+<div class="root"> 
+    <div id="userId"></div>
+    <div class="status">
+        We are waiting for authorization on the comet server
+    </div>
+    <hr>
+    <input type="text" placeholder="Message" id="text">
+    <input type="text" placeholder="user_id" id="to_user_id">
+    <button onclick="send($('#to_user_id').val(), $('#text').val())">Send</button>
+    <hr>
+    <div id="log"></div>
+</div>
+ 
+<script type="text/javascript">
+
+function log()
+{
+    console.log(arguments);
+    $("#log").append(JSON.stringify(arguments)+"<hr>");
+}
+
+// Authorization on comets server
+function auth()
+{
+    var user_id = localStorage['user_id']
+    if(!user_id)
+    {
+        user_id = Math.floor(Math.random()*1000000)
+        localStorage['user_id'] = user_id
+    }
+
+    $("#userId").text("USER_ID = "+user_id);
+    log("Request authorization for user_id="+user_id)
+    var user_key = "PassForUser"+user_id
+
+    // Connecting to video chat
+    return $.when($.ajax({
+        url: "https://comet-server.com/doc/CometQL/auth-chat/auth.php?user_id="+user_id+"&user_key="+user_key,
+        type: "GET",
+        dataType:'json',
+    })).always(function(res){
+        $(".status").html("We are waiting for connection to the comet server");
+        cometApi.start({
+            node: "app.comet-server.ru",
+            dev_id: 15,
+            user_id:user_id,
+            user_key:user_key,
+        })
+    }).promise();
+}
+
+function send(user_id, text)
+{
+    $.ajax({
+        url: "https://comet-server.com/doc/CometQL/auth-chat/send.php?user_id="+user_id+"&msg="+text,
+        type: "GET", 
+    })
+}
+
+cometApi.onAuthSuccess(function()
+{
+    // We will initialize the call after successful authorization on the comet server.
+    $(".StartCallBtn").removeClass("hide");
+    log("Authorization on the comet server is complete")
+     $(".status").html("Authorization on the comet server is complete");
+})
+
+CometServer().subscription("msg.event1", function(e){ 
+    log(e)
+})
+
+auth();
+
+</script>
+</body>
+</html>
