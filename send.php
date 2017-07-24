@@ -1,7 +1,30 @@
 <?php
 
-$link = mysqli_connect("app.comet-server.ru", "1668", "23gQu0am81DN732DNbpn4GSdzV6eul0tkKO3Z51n9mS62u2NozzjUOm9sSAHT5ut", "CometQL_v1");
-mysqli_query($link, "INSERT INTO users_auth (id, hash )VALUES (3, 'userHash')" );
-mysqli_query($link,"INSERT INTO users_messages (id, event, message)VALUES (3, 'event1', 'msg1')" );
+// More info about CppComet http://comet-server.org/doku.php/en
+// More info about CometQL http://comet-server.org/doku.php/en:comet:cometql
+// More info about auth in CppComet http://comet-server.org/doku.php/en:comet:authentication
 
+header('Content-Type: text/html; charset=utf-8');
+header("Access-Control-Allow-Origin: *");
+
+$user_id = (int)$_GET['user_id'];
+$msg = preg_replace("#[^A-z0-9 А-я]#usi", "", $_GET['msg']);
+
+// We connect to the comet server with login and password for the access demo (you can get your data for connection after registration at comet-server.com)
+// Login 15
+// Password lPXBFPqNg3f661JcegBY0N0dPXqUBdHXqj2cHf04PZgLHxT6z55e20ozojvMRvB8
+// CometQL_v1 database
+$link = mysqli_connect("app.comet-server.ru", "15", "lPXBFPqNg3f661JcegBY0N0dPXqUBdHXqj2cHf04PZgLHxT6z55e20ozojvMRvB8", "CometQL_v1");
+
+
+mysqli_query($link,"INSERT INTO users_messages (id, event, message)VALUES ('".$user_id."', 'event1', '".$msg."')" );
+
+if(mysqli_errno($link))
+{
+    echo mysqli_errno($link).": ".mysqli_error($link);
+}
+else
+{
+    echo "ok"; 
+}
 
