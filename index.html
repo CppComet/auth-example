@@ -48,7 +48,9 @@ hr{
     
 </div>
 <div class="root"> 
-    <div id="userId"></div>
+    <hr>
+    <div><span id="userId"></span> - use this id to send message</div>
+    <hr>
     <div class="status">
         We are waiting for authorization on the comet server
     </div>
@@ -71,7 +73,14 @@ function log()
 // Authorization on comets server
 function auth()
 {
-    var user_id = localStorage['user_id']
+    var user_id = 0;
+    
+    try{
+        user_id = localStorage['user_id']
+    }catch(e){ 
+        user_id = Math.floor(Math.random()*1000000)
+    } 
+     
     if(!user_id)
     {
         user_id = Math.floor(Math.random()*1000000)
