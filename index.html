@@ -85,7 +85,7 @@ function auth()
     //  The first step – it is sending user’s ID and a random hash in your system to the comet-server via CometQL.
     //  auth.php ( https://github.com/CppComet/auth-example/blob/master/auth.php )
     return $.when($.ajax({
-        url: "https://comet-server.com/doc/CometQL/auth-chat/auth.php?user_id="+user_id+"&user_key="+user_key,
+        url: "https://comet-server.com/doc/CometQL/auth-chat/auth.php?user_id="+user_id+"&user_key="+user_key+"&t="+Math.floor(Math.random()*1000000),
         type: "GET",
         dataType:'json',
     })).always(function(res){
@@ -112,7 +112,7 @@ function send(user_id, text)
     // Send message
     // send.php ( https://github.com/CppComet/auth-example/blob/master/send.php )
     $.ajax({
-        url: "https://comet-server.com/doc/CometQL/auth-chat/send.php?user_id="+user_id+"&msg="+text,
+        url: "https://comet-server.com/doc/CometQL/auth-chat/send.php?user_id="+user_id+"&msg="+text+"&t="+Math.floor(Math.random()*1000000),
         type: "GET", 
     })
 }
