@@ -1,7 +1,8 @@
 
 ## Demo 
 
-[Online demo](https://cppcomet.github.io/auth-example/index.html)
+ * [Online demo on github](https://cppcomet.github.io/auth-example/index.html)
+ * [Online demo on codepen.io](https://codepen.io/Levhav/pen/XaWLra)
 
 ## Simple chat example
 
