@@ -38,6 +38,14 @@ hr{
 <h3>Auth chat</h3>
 <div class="note">
     <p><a href="https://github.com/CppComet/auth-example">Git repository with all code of this example.</a></p> 
+    <p>In this example show how authenticate on CppComet and how send personal messages to users via CppComet</p> 
+    
+    <ul>
+        <li><a href="http://comet-server.org/doku.php/en" target="_blank">More info about CppComet</a></li>
+        <li><a href="http://comet-server.org/doku.php/en:comet:cometql"  target="_blank">More info about CometQL</a></li>
+        <li><a href="http://comet-server.org/doku.php/en:comet:authentication"  target="_blank">More info about auth in CppComet</a></li> 
+    </ul>
+    
 </div>
 <div class="root"> 
     <div id="userId"></div>
@@ -45,8 +53,8 @@ hr{
         We are waiting for authorization on the comet server
     </div>
     <hr>
-    <input type="text" placeholder="Message" id="text">
-    <input type="text" placeholder="user_id" id="to_user_id">
+    <input type="text" placeholder="Message" id="text"> - Personal text message for user<br>
+    <input type="text" placeholder="user_id" id="to_user_id"> - Identificator of user who must will receive the message<br>
     <button onclick="send($('#to_user_id').val(), $('#text').val())">Send</button>
     <hr>
     <div id="log"></div>
@@ -74,13 +82,17 @@ function auth()
     log("Request authorization for user_id="+user_id)
     var user_key = "PassForUser"+user_id
 
-    // Connecting to video chat
+    //  The first step – it is sending user’s ID and a random hash in your system to the comet-server via CometQL.
+    //  auth.php ( https://github.com/CppComet/auth-example/blob/master/auth.php )
     return $.when($.ajax({
         url: "https://comet-server.com/doc/CometQL/auth-chat/auth.php?user_id="+user_id+"&user_key="+user_key,
         type: "GET",
         dataType:'json',
     })).always(function(res){
         $(".status").html("We are waiting for connection to the comet server");
+        
+        // The function start accepts connection settings and opens new connection. 
+        // https://comet-server.com/wiki/doku.php/en:comet:javascript_api#connection_with_server
         cometApi.start({
             node: "app.comet-server.ru",
             dev_id: 15,
@@ -90,8 +102,15 @@ function auth()
     }).promise();
 }
 
+/**
+ * 
+ * @param {integer} user_id  
+ * @param {string} text 
+ */
 function send(user_id, text)
 {
+    // Send message
+    // send.php ( https://github.com/CppComet/auth-example/blob/master/send.php )
     $.ajax({
         url: "https://comet-server.com/doc/CometQL/auth-chat/send.php?user_id="+user_id+"&msg="+text,
         type: "GET", 

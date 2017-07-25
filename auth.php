@@ -14,7 +14,9 @@ $link = mysqli_connect("app.comet-server.ru", "15", "lPXBFPqNg3f661JcegBY0N0dPXq
 
 $user_id = $_GET['user_id'];
 $user_key = $_GET['user_key'];
- 
+
+// The table users_auth contains data of user’s authorizing on comet server.
+// More info about table “users_auth” https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_auth
 mysqli_query (  $link, "INSERT INTO users_auth (id, hash)VALUES('".mysqli_real_escape_string($link, $user_id)."', '".mysqli_real_escape_string($link, $user_key)."' );" );
 
 if(mysqli_errno($link))

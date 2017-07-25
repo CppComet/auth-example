@@ -16,8 +16,9 @@ $msg = preg_replace("#[^A-z0-9 А-я]#usi", "", $_GET['msg']);
 // CometQL_v1 database
 $link = mysqli_connect("app.comet-server.ru", "15", "lPXBFPqNg3f661JcegBY0N0dPXqUBdHXqj2cHf04PZgLHxT6z55e20ozojvMRvB8", "CometQL_v1");
 
-
-mysqli_query($link,"INSERT INTO users_messages (id, event, message)VALUES ('".$user_id."', 'event1', '".$msg."')" );
+// The table “users_messages” intended sending messages to authorized users by their identifiers.
+// More info about table “users_messages” https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_messages
+mysqli_query($link,"INSERT INTO users_messages (id, event, message)VALUES ('".$user_id."', 'newMessage', '".$msg."')" );
 
 if(mysqli_errno($link))
 {
