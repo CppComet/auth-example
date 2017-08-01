@@ -18,7 +18,7 @@ $link = mysqli_connect("app.comet-server.ru", "15", "lPXBFPqNg3f661JcegBY0N0dPXq
 
 // The table “users_messages” intended sending messages to authorized users by their identifiers.
 // More info about table “users_messages” https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_messages
-mysqli_query($link,"INSERT INTO users_messages (id, event, message)VALUES ('".$user_id."', 'newMessage', '".$msg."')" );
+mysqli_query($link,"INSERT INTO users_messages (id, event, message)VALUES ('".$user_id."', 'message', '".$msg."')" );
 
 if(mysqli_errno($link))
 {
