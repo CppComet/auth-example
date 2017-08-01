@@ -142,7 +142,7 @@ cometApi.onAuthSuccess(function()
      $(".status").html("Authorization on the comet server is complete");
 })
 
-CometServer().subscription("msg.event1", function(e){ 
+CometServer().subscription("msg.message", function(e){ 
     log(e)
 })
 
